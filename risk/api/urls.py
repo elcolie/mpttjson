@@ -6,14 +6,13 @@ from .views import (
     )
     
 
-
-    
+ 
 app_name="risk"
     
     
 urlpatterns = [
-    url(r'^$', RiskListAPIView.as_view(), name='risk'),
+#    url(r'^$', RiskListAPIView.as_view(), name='risk'),
     
-
+    url(r'^$', RiskListAPIView.as_view(), name='risk'),
 ]
 
