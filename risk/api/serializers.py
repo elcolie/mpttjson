@@ -20,9 +20,8 @@ class RiskSerializer(ModelSerializer):
 
 
 
-# CFE METHOD   --------------------------------------------------------------
-
-# Nested serializer which lists children of children (or descendants)
+# METHOD A  (Nested serializer)--------------------------------------------------------------
+ 
 # https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
 
 class RiskChildSerializer(ModelSerializer):
@@ -47,18 +46,11 @@ class RiskDetailSerializer(ModelSerializer):
         return None
 
 
-
-
-
-
-
 # METHOD B (using django-rest-framework-recursive) -------------------------------------------------------------------
+
 # https://github.com/heywbj/django-rest-framework-recursive
-#Source : http://www.django-rest-framework.org/api-guide/fields/#jsonfield
 
-# This method works but repeats the nodes at the root 
-
-#Includes a a nested representation of the name & slug (Custom field required by Treant)
+# This method works but unfortunately repeats the nodes at the root 
 
 
 class TextField(serializers.Field):
@@ -66,7 +58,7 @@ class TextField(serializers.Field):
     def to_representation(self, obj):
         ret = {
             "name": obj.name,
-            "slug": obj.slug
+            "slug": obj.slug,
         }
         return ret
 
@@ -78,10 +70,8 @@ class TextField(serializers.Field):
         return ret
 
 
-
-
 class TreeSerializer(serializers.Serializer):
-
+    id = serializers.CharField()
     text = TextField(source='*')
     HTMLclass = serializers.CharField()
     collapsed = serializers.BooleanField()
@@ -90,9 +80,8 @@ class TreeSerializer(serializers.Serializer):
     class Meta:
         model = Risk
         fields = [
+        'id'
         'text', 
         'slug', 
+        'children'
         ]
-
-
-

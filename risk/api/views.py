@@ -18,13 +18,10 @@ from .serializers import (
 # https://www.youtube.com/watch?v=6cakSZCDmIc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=16
 
 
-# Risk list (it uses the RiskSerializer)
+# Risk list
 class RiskListAPIView(ListAPIView):
     queryset = Risk.objects.all()
     serializer_class = RiskSerializer   
-# To do - Add search on queryset (see video)
-# To do - Add API permissions 
-
 
 
 # Nested serializer which lists children of children (or descendants)
@@ -34,10 +31,6 @@ class RiskListAPIView(ListAPIView):
 class RiskDetailAPIView(RetrieveAPIView):
     queryset = Risk.objects.all()
     serializer_class = RiskDetailSerializer    
-
-# Risk - update
-#class RiskUpdateAPIView(RetrieveUpdateAPIVIew):
-#  etc...   
 
 
 
