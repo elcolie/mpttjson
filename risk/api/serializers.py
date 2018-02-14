@@ -10,16 +10,28 @@ from risk.models import Risk
 
 
 
-# METHOD A   --------------------------------------------------------------
+# CFE METHOD   --------------------------------------------------------------
+
+# List of all risks (does not list children of children)
+# https://www.youtube.com/watch?v=6cakSZCDmIc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=16
 
 
-# Nested serializer which lists children (or descendants)
-# (https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17)
+class RiskSerializer(ModelSerializer):
+    class Meta:
+        model = Risk
+        fields = ['id', 'name', 'collapsed']
+
+
+
+
+# Nested serializer which lists children of children (or descendants)
+# https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
 
 class RiskChildSerializer(ModelSerializer):
     class Meta:
         model = Risk
         fields = ['id', 'name']
+
 
 class RiskDetailSerializer(ModelSerializer):
     subrisks = SerializerMethodField()
@@ -38,21 +50,16 @@ class RiskDetailSerializer(ModelSerializer):
 
 
 
-
 """
 
 # METHOD B -------------------------------------------------------------------
 # https://github.com/heywbj/django-rest-framework-recursive
-
-
-class RiskSerializer(ModelSerializer):
-    class Meta:
-        model = Risk
-        fields = ['id', 'parent', 'title', 'description', 'example', 'HTMLview']
-
-
-#Nested representation of the name & description (Custom field built for Treant)
 #Source : http://www.django-rest-framework.org/api-guide/fields/#jsonfield
+
+
+#Includes a a nested representation of the name & description (Custom field required by Treant)
+
+
 class TextField(serializers.Field):
 
     def to_representation(self, obj):
