@@ -18,24 +18,25 @@ class RiskManager(models.Manager):
 
 class Risk(MPTTModel):
     name = models.CharField(max_length=50, blank=False)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
-#    full_path = models.CharField(max_length=100, null=True, blank=True)
+    parent = TreeForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, unique=True, db_index=True)
 
     class MPTTMeta:
         order_insertion_by = ['name']
 
+    #Property used by the API (nested serialization)
+    def children(self): 
+        return Risk.objects.filter(parent=self)
 
-
-    #Field required by Treant: Color of box
+    #Property required by Treant: Color of box
     def HTMLclass(self):
         return 'blue'
 
-    #Field required by Treant: Collapsing of box
+    #Property required by Treant: Collapsing of box
     def collapsed(self):
         return 'true'
 
-    #Field required by Treant: Hyperlink
+    #Property required by Treant: Hyperlink
     def url(self):
         return reverse('risk', kwargs={'path': self.get_path()})
 

@@ -8,6 +8,7 @@ from risk.models import Risk
 from .serializers import (
     RiskDetailSerializer,
     RiskSerializer,
+    TreeSerializer,
 	)
 
 
@@ -29,25 +30,20 @@ class RiskListAPIView(ListAPIView):
 # Nested serializer which lists children of children (or descendants)
 # https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
 
-RiskDetailSerializer
 
-
-
-
-
-
-#Risk detail (doesn't work !)
-# class RiskDetailAPIView(RetrieveAPIView):
-# 	queryset = Risk.objects.all()
-#     serializer_class = RiskDetailSerializer
-#     lookup_field = 'slug'
-
-
+class RiskDetailAPIView(RetrieveAPIView):
+    queryset = Risk.objects.all()
+    serializer_class = RiskDetailSerializer    
 
 # Risk - update
 #class RiskUpdateAPIView(RetrieveUpdateAPIVIew):
 #  etc...   
 
 
+
+# Adding recursive package
+class TreeListAPIView(ListAPIView):
+    queryset = Risk.objects.all()
+    serializer_class = TreeSerializer   
 
 

@@ -7,5 +7,5 @@ from risk import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), 
-    url(r'^api/risk/', include("risk.api.urls", namespace='risk-api')) 
+    url(r'^api/', include("risk.api.urls", namespace='risk-api')) 
     ]
