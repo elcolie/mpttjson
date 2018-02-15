@@ -6,7 +6,7 @@ from risk.models import Risk
 
 from risk.models import Category
 
-from risk.models import Category2
+#from risk.models import Category2
 
 
 class RiskAdmin(admin.ModelAdmin):
@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 
-class Category2Admin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'parent')
+# class Category2Admin(admin.ModelAdmin):
+#     list_display = ('id', 'name', 'parent')
 
-admin.site.register(Category2, Category2Admin)
+# admin.site.register(Category2, Category2Admin)

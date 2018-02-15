@@ -6,31 +6,13 @@ from time import process_time
 from mptt.templatetags.mptt_tags import cache_tree_children, tree_item_iterator, drilldown_tree_for_node
 
 
-#Brasil example
+
 class Category(MPTTModel):
     name = models.CharField(max_length=50, blank=False)
-    parent = TreeForeignKey(
-        'self', 
-        null=True, 
-        blank=True, 
-        related_name='children', 
-        db_index=True, 
-        on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE)
 
     class MPTTMeta:
         order_insertion_by = ['name']
-
-    def __str__(self):
-        return self.name
-  
-
-#Stack example
-class Category2(MPTTModel):
-    name = models.CharField(max_length=50, blank=False)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='subcategories', on_delete=models.CASCADE)
-
-    class Meta:
-        db_table ='Categories'
 
     def __str__(self):
         return self.name

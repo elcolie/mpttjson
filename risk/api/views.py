@@ -1,72 +1,40 @@
-from rest_framework.generics import (
-	ListAPIView, 
-	RetrieveAPIView,
-	)
-
-
-from .serializers import (
-#    RiskDetailSerializer,
-    RiskSerializer,
-    TreeSerializer,
-    RootSerializer,
-    CategorySerializer,
-    Category2Serializer,  
-    SubcategoriesSerializer,  
-	)
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from .serializers import RootSerializer, RiskSerializer, TreeSerializer, Root2Serializer
 
 from risk.models import Risk
+from risk.models import Category    
 
-from risk.models import Category  
-
-from risk.models import Category2    
-
-
+#used to limit the queryset to the root node (avoids repetitions)
+from mptt.utils import get_cached_trees    
 
 
-
-
-
-# Brasil example
-class CategoryUniqueViewSet(ListAPIView):    
+# Nested serializer example
+class NestedSerializer(ListAPIView):    
     serializer_class = RootSerializer
-    queryset = Category.objects.all() 
+    #queryset = Category.objects.all()                      #this doesn't work
+    #queryset = Category.objects.filter(level=0)            #this works
+    queryset = get_cached_trees(Category.objects.all())     #this also works
 
 
-# Stack Overflow example 0
-class Stack0(ListAPIView):
-    serializer_class = SubcategoriesSerializer
-    queryset = Category2.objects.all()   
+# Nested serializer example 2
+class Nested2Serializer(ListAPIView):    
+    serializer_class = Root2Serializer
+    #queryset = Risk.objects.all()                      #this doesn't work
+    #queryset = Risk.objects.filter(level=0)            #this works
+    queryset = get_cached_trees(Risk.objects.all())     #this also works
 
 
-# Stack Overflow example 1
-class Stack1(ListAPIView):
-    serializer_class = CategorySerializer
-    queryset = Category2.objects.all()   
-#    queryset = cache_tree_children()   
+# Risk tree (using the recursive package)
+class TreeListAPIView(ListAPIView):
+    serializer_class = TreeSerializer 
+    #queryset = Risk.objects.all()
+    queryset = Risk.objects.filter(level=0)  
+    #queryset = get_cached_trees(Risk.objects.all())     #this also works
 
-
-# Stack Overflow example 2
-class Stack2(ListAPIView):
-    serializer_class = Category2Serializer
-    queryset = Category2.objects.all()    
-
-
+ 
 # Risk list (using nested serializer)
 class RiskListAPIView(ListAPIView):
+    serializer_class = RiskSerializer 
     queryset = Risk.objects.all()
-    serializer_class = RiskSerializer   
-
-
-# Risk list (using the recursive package)
-class TreeListAPIView(ListAPIView):
-    queryset = Risk.objects.all()
-    serializer_class = TreeSerializer   
-
-
-#--------------------
-
-# Risk detail
-# class RiskDetailAPIView(RetrieveAPIView):
-#     queryset = Risk.objects.all()
-#     serializer_class = RiskDetailSerializer    
+  
 
