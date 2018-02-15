@@ -3,34 +3,70 @@ from rest_framework.generics import (
 	RetrieveAPIView,
 	)
 
-from risk.models import Risk
+
 from .serializers import (
-    RiskDetailSerializer,
+#    RiskDetailSerializer,
     RiskSerializer,
     TreeSerializer,
+    RootSerializer,
+    CategorySerializer,
+    Category2Serializer,  
+    SubcategoriesSerializer,  
 	)
 
+from risk.models import Risk
 
-# Risk detail
+from risk.models import Category  
 
-class RiskDetailAPIView(RetrieveAPIView):
-    queryset = Risk.objects.all()
-    serializer_class = RiskDetailSerializer    
+from risk.models import Category2    
+
+
+
+
+
+
+
+# Brasil example
+class CategoryUniqueViewSet(ListAPIView):    
+    serializer_class = RootSerializer
+    queryset = Category.objects.all() 
+
+
+# Stack Overflow example 0
+class Stack0(ListAPIView):
+    serializer_class = SubcategoriesSerializer
+    queryset = Category2.objects.all()   
+
+
+# Stack Overflow example 1
+class Stack1(ListAPIView):
+    serializer_class = CategorySerializer
+    queryset = Category2.objects.all()   
+#    queryset = cache_tree_children()   
+
+
+# Stack Overflow example 2
+class Stack2(ListAPIView):
+    serializer_class = Category2Serializer
+    queryset = Category2.objects.all()    
 
 
 # Risk list (using nested serializer)
-# Source: https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
-
 class RiskListAPIView(ListAPIView):
     queryset = Risk.objects.all()
     serializer_class = RiskSerializer   
 
 
 # Risk list (using the recursive package)
-# Source ()
-
 class TreeListAPIView(ListAPIView):
     queryset = Risk.objects.all()
     serializer_class = TreeSerializer   
 
+
+#--------------------
+
+# Risk detail
+# class RiskDetailAPIView(RetrieveAPIView):
+#     queryset = Risk.objects.all()
+#     serializer_class = RiskDetailSerializer    
 

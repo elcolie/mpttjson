@@ -6,14 +6,35 @@ from time import process_time
 from mptt.templatetags.mptt_tags import cache_tree_children, tree_item_iterator, drilldown_tree_for_node
 
 
+#Brasil example
+class Category(MPTTModel):
+    name = models.CharField(max_length=50, blank=False)
+    parent = TreeForeignKey(
+        'self', 
+        null=True, 
+        blank=True, 
+        related_name='children', 
+        db_index=True, 
+        on_delete=models.CASCADE)
 
-# All queryset 
-# See coding for entrepreneurs Rest framework video 17,
-class RiskManager(models.Manager):
-	def all(self):
-		qs = super(RiskManager, self).filter(parent=None)
-		return qs
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
+    def __str__(self):
+        return self.name
+  
+
+#Stack example
+class Category2(MPTTModel):
+    name = models.CharField(max_length=50, blank=False)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='subcategories', on_delete=models.CASCADE)
+
+    class Meta:
+        db_table ='Categories'
+
+    def __str__(self):
+        return self.name
+  
 
 
 class Risk(MPTTModel):
@@ -39,8 +60,6 @@ class Risk(MPTTModel):
     #Property required by Treant: Hyperlink
     def url(self):
         return reverse('risk', kwargs={'path': self.get_path()})
-
-
 
     #This property determines if the record is a parent
     @property

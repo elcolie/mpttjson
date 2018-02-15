@@ -2,9 +2,14 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from risk import views
-
+from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+
+
+
+
+
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,6 +30,8 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
+
+    url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^api/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/risk/', include("risk.api.urls", namespace='risk-api'))    

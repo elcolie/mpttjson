@@ -1,10 +1,76 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer,  SerializerMethodField
 from rest_framework_recursive.fields import RecursiveField                 #To find list of children
-
+from mptt.models import MPTTModel, TreeForeignKey
 
 from risk.models import Risk
-from mptt.models import MPTTModel, TreeForeignKey
+
+from risk.models import Category
+
+from risk.models import Category2
+
+
+
+#Brasil example
+class RootSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+    
+    def get_children(self, parent):
+        queryset = parent.get_children()
+        serialized_data = RootSerializer(queryset, many=True, read_only=True, context=self.context)
+        return serialized_data.data
+    
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'children')
+
+
+#Stack example 0
+class RecursiveField(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+class SubcategoriesSerializer(serializers.Serializer):
+    subcategories = RecursiveField(many = True)
+
+    class Meta:
+        model = Category2
+        fields = ('id', 'name', 'parent', 'subcategories')
+
+
+
+#Stack example 1
+class CategorySerializer(serializers.ModelSerializer):
+
+    subcategories = serializers.SerializerMethodField(
+        read_only=True, method_name="get_child_categories")
+    
+    class Meta:
+        model = Category2
+        fields = ('id', 'name', 'subcategories')
+    
+    def get_child_categories(self, obj):
+        serializer = CategorySerializer(
+            instance=obj.subcategories_set.all(),     # Gives error here
+            many=True
+        )
+        return serializer.data
+
+
+# Stack example 2
+class SubcategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category2
+        fields = ('id', 'name', 'parent')
+    
+class Category2Serializer(serializers.ModelSerializer):
+    subcategories = SubcategorySerializer(many = True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'parent', 'subcategories')
 
 
 
@@ -20,38 +86,10 @@ class RiskSerializer(ModelSerializer):
 
 
 
-# METHOD A  (Nested serializer)--------------------------------------------------------------
- 
-# https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
-
-class RiskChildSerializer(ModelSerializer):
-    class Meta:
-        model = Risk
-        fields = ['id', 'name']
 
 
-class RiskDetailSerializer(ModelSerializer):
-    subrisks = SerializerMethodField()
-    class Meta:
-        model = Risk
-        fields = [
-            'id',
-            'name',
-            'subrisks',
-            ]
-
-    def get_subrisks(self, obj):
-        if obj.is_parent:
-            return RiskChildSerializer(obj.children(), many=True).data                      
-        return None
-
-
-# METHOD B (using django-rest-framework-recursive) -------------------------------------------------------------------
-
+# django-rest-framework-recursive example -------------------------------------------------------------------
 # https://github.com/heywbj/django-rest-framework-recursive
-
-# This method works but unfortunately repeats the nodes at the root 
-
 
 class TextField(serializers.Field):
 
@@ -85,3 +123,30 @@ class TreeSerializer(serializers.Serializer):
         'slug', 
         'children'
         ]
+
+
+
+# Coding for Entrepreneurs example--------------------------------------------------------------
+# https://www.youtube.com/watch?v=1Ii5yZLS1Jc&list=PLEsfXFp6DpzTOcOVdZF-th7BS_GYGguAS&index=17
+
+# class RiskChildSerializer(ModelSerializer):
+#     class Meta:
+#         model = Risk
+#         fields = ['id', 'name']
+
+
+# class RiskDetailSerializer(ModelSerializer):
+#     subrisks = SerializerMethodField()
+#     class Meta:
+#         model = Risk
+#         fields = [
+#             'id',
+#             'name',
+#             'subrisks',
+#             ]
+
+#     def get_subrisks(self, obj):
+#         if obj.is_parent:
+#             return RiskChildSerializer(obj.children(), many=True).data                      
+#         return None
+
