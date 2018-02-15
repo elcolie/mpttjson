@@ -4,7 +4,8 @@ from .serializers import RootSerializer, RiskSerializer, TreeSerializer, Root2Se
 from risk.models import Risk
 from risk.models import Category    
 
-#used to limit the queryset to the root node (avoids repetitions)
+#The following caches the root node to limit the queryset to the root node only
+#Otherwise the nodes are repeated several times
 from mptt.utils import get_cached_trees    
 
 
@@ -27,8 +28,8 @@ class Nested2Serializer(ListAPIView):
 # Risk tree (using the recursive package)
 class TreeListAPIView(ListAPIView):
     serializer_class = TreeSerializer 
-    #queryset = Risk.objects.all()
-    queryset = Risk.objects.filter(level=0)  
+    #queryset = Risk.objects.all()                       #this doesn't work
+    queryset = Risk.objects.filter(level=0)              #this works
     #queryset = get_cached_trees(Risk.objects.all())     #this also works
 
  
