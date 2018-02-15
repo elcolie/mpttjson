@@ -19,7 +19,7 @@ class RootSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        fields = ('id', 'name', 'children')
+        fields = ( 'name', 'children')
 
 
 # B   Nested serializer ----------------------------------------
@@ -41,7 +41,7 @@ class TextField(serializers.Field):
         return ret
 
 class Root2Serializer(serializers.ModelSerializer):
-    id = serializers.CharField()
+#    id = serializers.CharField()
     text = TextField(source='*')
     HTMLclass = serializers.CharField()
     collapsed = serializers.BooleanField()
@@ -54,7 +54,7 @@ class Root2Serializer(serializers.ModelSerializer):
     
     class Meta:
         model = Risk
-        fields = ('id', 'text', 'HTMLclass', 'collapsed', 'children')
+        fields = ( 'text', 'HTMLclass', 'collapsed', 'children')
 
 
 
@@ -79,7 +79,6 @@ class TextField(serializers.Field):
 
 
 class TreeSerializer(serializers.Serializer):
-    id = serializers.CharField()
     text = TextField(source='*')
     HTMLclass = serializers.CharField()
     collapsed = serializers.BooleanField()
@@ -87,7 +86,7 @@ class TreeSerializer(serializers.Serializer):
 
     class Meta:
         model = Risk
-        fields = ['id', 'text', 'HTMLclass', 'collapsed', 'children']
+        fields = ['text', 'HTMLclass', 'collapsed', 'children']
 
 
 
@@ -96,6 +95,6 @@ class TreeSerializer(serializers.Serializer):
 class RiskSerializer(ModelSerializer):
     class Meta:
         model = Risk
-        fields = ['id', 'name', 'collapsed']
+        fields = ['id', 'name']
 
 

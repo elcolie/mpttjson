@@ -27,28 +27,22 @@ class Risk(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
-    #Property used by the API (nested serialization)
+    #Required by the C - Recursive example only
     def children(self): 
         return Risk.objects.filter(parent=self)
 
-    #Property required by Treant: Color of box
+    #Required by Treant: Color of box
     def HTMLclass(self):
         return 'blue'
 
-    #Property required by Treant: Collapsing of box
+    #Required by Treant: Collapsing of box
     def collapsed(self):
         return 'true'
 
-    #Property required by Treant: Hyperlink
+    #Required by Treant: Hyperlink
     def url(self):
         return reverse('risk', kwargs={'path': self.get_path()})
 
-    #This property determines if the record is a parent
-    @property
-    def is_parent(self):
-        if self.parent is not None:
-            return False
-        return True
 
     def __str__(self):
         return self.name
