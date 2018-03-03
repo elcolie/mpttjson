@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_mptt_admin',
+    'django_extensions',
     'rest_framework',
+    'mptt',
 
 
 #own apps

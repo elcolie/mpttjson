@@ -1,6 +1,9 @@
 
-from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls import url, include
+
+from django.urls import path, include
+
 from risk import views
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
@@ -30,6 +33,8 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
+
+    path('genres/', include('risk.urls', namespace='genre')),
 
     url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^api/', include(router.urls)),

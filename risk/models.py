@@ -2,8 +2,27 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from mptt.models import MPTTModel, TreeForeignKey  # Applies Modified Preorder Tree Traversal for performance and various utilities such as get_root()
 import re
+
+from django.urls import reverse
+
 from time import process_time
 from mptt.templatetags.mptt_tags import cache_tree_children, tree_item_iterator, drilldown_tree_for_node
+
+
+
+class Genre(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True,
+                            on_delete=models.CASCADE)
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def is_second_node(self):
+        return True if (self.get_ancestors().count() == 1) else False
 
 
 
@@ -16,7 +35,9 @@ class Category(MPTTModel):
 
     def __str__(self):
         return self.name
-  
+
+
+
 
 
 class Risk(MPTTModel):

@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,25 +8,43 @@
     <meta name="viewport" content="width=device-width">
     <title> Django REST MPTT Serializing examples </title>
 
-
 </head>
 <body>    
     
     <br>
-    Django REST MPTT Serializing examples:
+    MPTT:
+
     <br>
+    <a href="/admin/risk/genre/">Admin (Genre)</a>
+    <br>
+    <a href="/genres/">List (Genre)</a>
     <br>
     <br> 
-    <a href="{% url 'risk:nested' %}">Nested serializer 	
-    <br>
-    <a href="{% url 'risk:nested2' %}">Nested serializer 2	
-    <br>
-    <a href="{% url 'risk:tree' %}">Django-serialize-recursive  	
-    <br>
-    <a href="{% url 'risk:list' %}">Simple list  	
-    <br>
 
+    CRUD:
 
+    <br>
+    <a href="/genres/create/">Create (Genre)</a>
+    <br>
+    <a href="/genres/5/">Detail (Genre)</a>
+    <br>
+    <a href="/genres/5/move/">Move (Genre)</a>
+    <br>
+    <br> 
+
+    REST API:
+
+    <br> 
+    <a href="{% url 'risk:list2' %}">Simple list (Genre)</a>     
+    <br> 
+    <a href="{% url 'risk:list' %}">Simple list (Risk)</a>  
+    <br>
+    <a href="{% url 'risk:nested' %}">Nested serializer (Category)</a> 
+    <br>
+    <a href="{% url 'risk:nested2' %}">Nested serializer 2 (Risk)</a> 
+    <br>
+    <a href="{% url 'risk:tree' %}">Django-serialize-recursive (Risk)</a>  	
+    <br>
 
 
 </body>

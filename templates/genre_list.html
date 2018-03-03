@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load mptt_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre ListView</title>
+</head>
+<style>
+    .root {color: purple}
+    .child{color: black}
+    .leaf {color: gray}
+</style>
+<body>
+    {% recursetree nodes %}
+    <div class="
+        {% if node.is_root_node %}
+        root
+        {% elif node.is_child_node and not node.is_leaf_node or node.is_second_node%}
+        child
+        {% elif node.is_leaf_node and not node.is_root_node%}
+        leaf
+        {%endif%}">
+        - {{node.name}}
+<!--        {{node.is_second_node}}   -->
+    </div>
+    {% if not node.is_leaf_node%}
+    <ul>{{children}}</ul>
+    {% endif %}
+
+    {% endrecursetree %}
+</ul>
+</body>
+</html>
