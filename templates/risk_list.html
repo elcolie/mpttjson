@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Genre ListView</title>
+    <title>Risk ListView</title>
 </head>
 <style>
     .root {color: purple}
@@ -20,7 +20,7 @@
         {% elif node.is_leaf_node and not node.is_root_node%}
         leaf
         {%endif%}">
-        - {{node.name}}
+        - {{node.title}}
 <!--        {{node.is_second_node}}   -->
     </div>
     {% if not node.is_leaf_node%}

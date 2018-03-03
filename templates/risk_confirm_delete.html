@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Genre Create Form Example</title>
+    <title>Risk Delete Example</title>
 </head>
 <body>
     <form action="" method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save" />
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" />
     </form>
 </body>
 </html>

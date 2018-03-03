@@ -15,35 +15,25 @@
     MPTT:
 
     <br>
-    <a href="/admin/risk/genre/">Admin</a>
+    <a href="/admin/risk/risk/">Admin</a>
     <br>
-    <a href="/genres/">Template</a>
+    <a href="/risk/">Template</a>
     <br>
     <br> 
 
     CRUD:
 
     <br>
-    <a href="/genres/create/">Create</a>
+    <a href="/risk/create/">Create</a>
     <br>
-    <a href="/genres/5/">Detail</a>
+    <a href="/risk/2/">Detail</a>
     <br>
-    <a href="/genres/5/move/">Move</a>
+    <a href="/risk/2/move/">Move</a>
     <br>
     <br> 
 
     REST API:
-
-    <br> 
-    <a href="{% url 'risk:list' %}">Simple list</a>     
-    <br> 
-
-    <a href="{% url 'risk:nested' %}">Nested serializer</a> 
-    <br>
-
-    <a href="{% url 'risk:tree' %}">Nested-serialize-recursive</a>  	
-    <br>
-
+    <a href="{% url 'risk-api:risktree' %}">Nested-serialize-recursive</a> 
 
 </body>
 </html>

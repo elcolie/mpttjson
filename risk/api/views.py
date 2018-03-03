@@ -1,29 +1,19 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .serializers import  GenreSerializer, RootSerializer, TreeSerializer
+from risk.models import Risk
 
-from risk.models import Genre
+from .serializers import  (
+	                       RiskTreeSerializer,  
+                          )
 
-#The following caches the root node to limit the queryset to the root node only
-#Otherwise the nodes are repeated several times
+
 from mptt.utils import get_cached_trees    
-
- 
-# Genre list (using nested serializer)
-class GenreListAPIView(ListAPIView):
-    serializer_class = GenreSerializer 
-    queryset = Genre.objects.all()
- 
-
-# Nested serializer example
-class NestedSerializer(ListAPIView):    
-    serializer_class = RootSerializer
-    #queryset = Genre.objects.filter(level=0)            #this works
-    queryset = get_cached_trees(Genre.objects.all())     #this also works
+#This caches the root node to limit the queryset to the root node only
+#Otherwise the nodes are repeated several times
 
 
-# Genre tree (using the recursive package)
-class NestedRecursiveAPIView(ListAPIView):
-    serializer_class = TreeSerializer 
-    #queryset = Genre.objects.filter(level=0)              #this works
-    queryset = get_cached_trees(Genre.objects.all())     #this also works
+# Credit to lucasveigaf@gmail.com for making this work
 
+class RiskTreeListAPIView(ListAPIView):
+    queryset = Risk.objects.filter(level=0)            #alternative 1
+#    queryset = get_cached_trees(Risk.objects.all())     #alternative 2 (doesn't work on pythonanywhere)
+    serializer_class = RiskTreeSerializer

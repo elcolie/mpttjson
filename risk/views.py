@@ -5,18 +5,18 @@ from django.views.generic import ListView, CreateView, DeleteView, DetailView, U
 from mptt.exceptions import InvalidMove
 from mptt.forms import MoveNodeForm
 
-from risk.forms import GenreCreateForm, GenreMoveNodeForm
-from risk.models import Genre
+from risk.forms import RiskCreateForm, RiskMoveNodeForm
+from risk.models import Risk
 
 
 def move_category(request, pk=None):
-    category = get_object_or_404(Genre, pk=pk)
+    category = get_object_or_404(Risk, pk=pk)
     if request.method == 'POST':
         form = MoveNodeForm(category, request.POST)
         if form.is_valid():
             try:
                 category = form.save()
-                return HttpResponseRedirect(reverse_lazy('genre:list'))
+                return HttpResponseRedirect(reverse_lazy('risk:list'))
             except InvalidMove:
                 pass
     else:
@@ -27,18 +27,18 @@ def move_category(request, pk=None):
     '''
     return render(
         request,
-        'genre_move.html',
+        'risk_move.html',
         context={
             'form': form,
             'category': category,
-            'category_tree': Genre.objects.all(),
+            'category_tree': Risk.objects.all(),
         }
     )
 
 
-class GenreListView(ListView):
-    model = Genre
-    template_name = 'genre_list.html'
+class RiskListView(ListView):
+    model = Risk
+    template_name = 'risk_list.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """Get the context for this view."""
@@ -67,16 +67,16 @@ class GenreListView(ListView):
         return super().get_context_data(**context)
 
 
-class GenreCreateView(CreateView):
-    model = Genre
-    template_name = 'genre_create.html'
-    form_class = GenreCreateForm
-    success_url = reverse_lazy('genre:list')
+class RiskCreateView(CreateView):
+    model = Risk
+    template_name = 'risk_create.html'
+    form_class = RiskCreateForm
+    success_url = reverse_lazy('risk:list')
 
 
-class GenreDetailView(DetailView):
-    model = Genre
-    template_name = 'genre_detail.html'
+class RiskDetailView(DetailView):
+    model = Risk
+    template_name = 'risk_detail.html'
 
     def get_context_data(self, **kwargs):
         """
@@ -88,20 +88,20 @@ class GenreDetailView(DetailView):
         return context
 
 
-class GenreMoveView(UpdateView):
+class RiskMoveView(UpdateView):
     """
     Experimenting the `UpdateView`, but failed with getting the `form`
     """
-    model = Genre
-    form_class = GenreMoveNodeForm
-    template_name = 'genre_move.html'
+    model = Risk
+    form_class = RiskMoveNodeForm
+    template_name = 'risk_move.html'
 
     def get_object(self, *args, **kwargs):
-        return get_object_or_404(Genre, pk=self.kwargs.get('pk'))
+        return get_object_or_404(Risk, pk=self.kwargs.get('pk'))
 
     def get_form(self, form_class=None):
         if self.request.method == 'POST':
-            form = MoveNodeForm(Genre, self.request.POST)
+            form = MoveNodeForm(Risk, self.request.POST)
             if form.is_valid():
                 try:
                     category = form.save()
@@ -114,11 +114,11 @@ class GenreMoveView(UpdateView):
             import pdb; pdb.set_trace()
             TypeError: int() argument must be a string, a bytes-like object or a number, not 'DeferredAttribute'
             '''
-            form = MoveNodeForm(Genre)
+            form = MoveNodeForm(Risk)
         return form
 
 
-class GenreDeleteView(DeleteView):
-    model = Genre
-    template_name = 'genre_confirm_delete.html'
-    success_url = reverse_lazy('genre:list')
+class RiskDeleteView(DeleteView):
+    model = Risk
+    template_name = 'risk_confirm_delete.html'
+    success_url = reverse_lazy('risk:list')

@@ -34,7 +34,7 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
 
-    path('genres/', include('risk.urls', namespace='genre')),
+#    path('risk/', include('risk.urls', namespace='risk')),
 
     url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^api/', include(router.urls)),

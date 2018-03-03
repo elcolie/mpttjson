@@ -1,12 +1,24 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer,  SerializerMethodField
-from rest_framework_recursive.fields import RecursiveField                 #To find list of children
+from rest_framework_recursive.fields import RecursiveField  #To find list of children
+
+from risk.models import Risk
+
 from mptt.models import MPTTModel, TreeForeignKey
 
-from risk.models import Genre
 
 
-# A   Nested serializer example----------------------------------------
+#  Simple list -----------------------------------------
+
+class RiskSerializer(ModelSerializer):
+    class Meta:
+        model = Risk
+        fields = ['id', 'title']
+
+
+
+
+# Nested serializer example----------------------------------------
 
 class RootSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
@@ -17,82 +29,64 @@ class RootSerializer(serializers.ModelSerializer):
         return serialized_data.data
     
     class Meta:
-        model = Genre
-        fields = ( 'name', 'children')
-
-
-# B   Nested serializer ----------------------------------------
-
-class TextField(serializers.Field):
-
-    def to_representation(self, obj):
-        ret = {
-            "name": obj.name,
-            "slug": obj.slug,
-        }
-        return ret
-
-    def to_internal_value(self, data):
-        ret = {
-            "name": data["name"],
-            "slug": data["slug"],
-        }
-        return ret
-
-class Root2Serializer(serializers.ModelSerializer):
-#    id = serializers.CharField()
-    text = TextField(source='*')
-    HTMLclass = serializers.CharField()
-    collapsed = serializers.BooleanField()
-    children = serializers.SerializerMethodField()
-    
-    def get_children(self, parent):
-        queryset = parent.get_children()
-        serialized_data = Root2Serializer(queryset, many=True, read_only=True, context=self.context)
-        return serialized_data.data
-    
-    class Meta:
-        model = Genre
-        fields = ( 'text', 'HTMLclass', 'collapsed', 'children')
+        model = Risk
+        fields = ( 'title', 'children')
 
 
 
-# C   Recursive example -------------------------------------------------------------------
+# Recursive example -------------------------------------------------------------------
 # https://github.com/heywbj/django-rest-framework-recursive
 
-class TextField(serializers.Field):
+
+# Class to produce link field in the format required by treant:
+
+class Field_A(serializers.Field):
 
     def to_representation(self, obj):
         ret = {
-            "name": obj.name,
-            "slug": obj.slug,
+            "name": obj.title,
+#            "description": obj.description
         }
         return ret
 
     def to_internal_value(self, data):
         ret = {
-            "name": data["name"],
-            "slug": data["slug"],
+            "title": data["name"],
+#            "description": data["description"],
         }
         return ret
 
+""" 
+class Field_B(serializers.CharField):
 
-class TreeSerializer(serializers.Serializer):
-    text = TextField(source='*')
+    def to_representation(self, obj):
+        ret = {
+            "href": obj.get_path()                           
+        }
+        return ret
+
+    def to_internal_value(self, data):
+        ret = {
+             "url": data["href"]   
+        }
+        return ret
+"""
+
+class RiskTreeSerializer(serializers.Serializer):
+    text = Field_A(source='*')
+#    link =Field_B(source='*')
+#    url = serializers.CharField()
     HTMLclass = serializers.CharField()
-    collapsed = serializers.BooleanField()
+    collapsed = serializers.BooleanField()                  #This field is required only for level 0 (false) and level 1 (true))
     children = serializers.ListField(child=RecursiveField())
 
     class Meta:
-        model = Genre
-        fields = ['text', 'HTMLclass', 'collapsed', 'children']
-
-
-
-#  Simple list -----------------------------------------
-
-class GenreSerializer(ModelSerializer):
-    class Meta:
-        model = Genre
-        fields = ['id', 'name']
+        model = Risk
+        fields = [
+        'text', 
+        'link',
+ #       'url', 
+        'HTMLclass', 
+  #      'collapsed', 
+        'children']
 

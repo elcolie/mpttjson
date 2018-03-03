@@ -2,6 +2,7 @@
 django==2.0
 django-mptt
 django-mptt-admin
+django-mptt-urls
 djangorestframework
 djangorestframework-recursive
 django-extensions

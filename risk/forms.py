@@ -1,25 +1,25 @@
 from django.forms import ModelForm
 from mptt.forms import TreeNodeChoiceField, MoveNodeForm, TreeNodePositionField
 
-from risk.models import Genre
+from risk.models import Risk
 
 
-class GenreCreateForm(ModelForm):
+class RiskCreateForm(ModelForm):
     # They are several fields you can try
     # TreeNodeChoiceField is by default
     # http://django-mptt.readthedocs.io/en/latest/forms.html#treenodemultiplechoicefield
-    # parent = TreeNodeChoiceField(queryset=Genre.objects.all())
+    # parent = TreeNodeChoiceField(queryset=Risk.objects.all())
 
     class Meta:
-        model = Genre
+        model = Risk
         fields = [
             'id',
-            'name',
+            'title',
             'parent',
             'slug',
         ]
 
 
-class GenreMoveNodeForm(MoveNodeForm):
-    target = TreeNodeChoiceField(queryset=Genre.objects.all())
+class RiskMoveNodeForm(MoveNodeForm):
+    target = TreeNodeChoiceField(queryset=Risk.objects.all())
     position = TreeNodePositionField()
