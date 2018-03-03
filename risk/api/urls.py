@@ -8,6 +8,7 @@ from .views import (
     NestedSerializer,
     TreeListAPIView,
     RiskListAPIView,
+    GenreListAPIView,
     Nested2Serializer,
     )
     
@@ -29,6 +30,8 @@ urlpatterns = [
     #Simple list
     url(r'^list/$', RiskListAPIView.as_view(), name='list'),
 
+    #Simple list
+    url(r'^list2/$', GenreListAPIView.as_view(), name='list2'),
 
 
     ]

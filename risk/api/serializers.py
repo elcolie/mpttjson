@@ -5,6 +5,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from risk.models import Risk
 from risk.models import Category
+from risk.models import Genre
 
 
 # A   Nested serializer example----------------------------------------
@@ -90,11 +91,16 @@ class TreeSerializer(serializers.Serializer):
 
 
 
-# D  Simple list -----------------------------------------
+#  Simple list -----------------------------------------
 
 class RiskSerializer(ModelSerializer):
     class Meta:
         model = Risk
         fields = ['id', 'name']
 
+
+class GenreSerializer(ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ['id', 'name']
 

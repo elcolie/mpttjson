@@ -1,8 +1,9 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .serializers import RootSerializer, RiskSerializer, TreeSerializer, Root2Serializer
+from .serializers import RootSerializer, RiskSerializer, GenreSerializer, TreeSerializer, Root2Serializer
 
 from risk.models import Risk
 from risk.models import Category    
+from risk.models import Genre
 
 #The following caches the root node to limit the queryset to the root node only
 #Otherwise the nodes are repeated several times
@@ -38,4 +39,8 @@ class RiskListAPIView(ListAPIView):
     serializer_class = RiskSerializer 
     queryset = Risk.objects.all()
   
-
+# Genre list (using nested serializer)
+class GenreListAPIView(ListAPIView):
+    serializer_class = GenreSerializer 
+    queryset = Genre.objects.all()
+ 
