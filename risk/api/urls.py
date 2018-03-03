@@ -7,7 +7,6 @@ from django.contrib import admin
 from .views import (
     NestedSerializer,
     TreeListAPIView,
-    RiskListAPIView,
     GenreListAPIView,
     Nested2Serializer,
     )
@@ -28,10 +27,7 @@ urlpatterns = [
     url(r'^tree/$', TreeListAPIView.as_view(), name='tree'),
 
     #Simple list
-    url(r'^list/$', RiskListAPIView.as_view(), name='list'),
-
-    #Simple list
-    url(r'^list2/$', GenreListAPIView.as_view(), name='list2'),
+    url(r'^list/$', GenreListAPIView.as_view(), name='list'),
 
 
     ]

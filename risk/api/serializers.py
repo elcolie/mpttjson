@@ -93,12 +93,6 @@ class TreeSerializer(serializers.Serializer):
 
 #  Simple list -----------------------------------------
 
-class RiskSerializer(ModelSerializer):
-    class Meta:
-        model = Risk
-        fields = ['id', 'name']
-
-
 class GenreSerializer(ModelSerializer):
     class Meta:
         model = Genre

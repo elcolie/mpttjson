@@ -1,5 +1,6 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .serializers import RootSerializer, RiskSerializer, GenreSerializer, TreeSerializer, Root2Serializer
+from .serializers import RootSerializer,  GenreSerializer, TreeSerializer, Root2Serializer 
+#from .serializers import RiskSerializer
 
 from risk.models import Risk
 from risk.models import Category    
@@ -13,7 +14,6 @@ from mptt.utils import get_cached_trees
 # Nested serializer example
 class NestedSerializer(ListAPIView):    
     serializer_class = RootSerializer
-    #queryset = Category.objects.all()                      #this doesn't work
     #queryset = Category.objects.filter(level=0)            #this works
     queryset = get_cached_trees(Category.objects.all())     #this also works
 
@@ -21,7 +21,6 @@ class NestedSerializer(ListAPIView):
 # Nested serializer example 2
 class Nested2Serializer(ListAPIView):    
     serializer_class = Root2Serializer
-    #queryset = Risk.objects.all()                      #this doesn't work
     #queryset = Risk.objects.filter(level=0)            #this works
     queryset = get_cached_trees(Risk.objects.all())     #this also works
 
@@ -29,16 +28,10 @@ class Nested2Serializer(ListAPIView):
 # Risk tree (using the recursive package)
 class TreeListAPIView(ListAPIView):
     serializer_class = TreeSerializer 
-    #queryset = Risk.objects.all()                       #this doesn't work
     queryset = Risk.objects.filter(level=0)              #this works
     #queryset = get_cached_trees(Risk.objects.all())     #this also works
 
  
-# Risk list (using nested serializer)
-class RiskListAPIView(ListAPIView):
-    serializer_class = RiskSerializer 
-    queryset = Risk.objects.all()
-  
 # Genre list (using nested serializer)
 class GenreListAPIView(ListAPIView):
     serializer_class = GenreSerializer 

@@ -16,6 +16,7 @@ class GenreCreateForm(ModelForm):
             'id',
             'name',
             'parent',
+            'slug',
         ]
 
 

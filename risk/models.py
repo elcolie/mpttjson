@@ -8,12 +8,15 @@ from django.urls import reverse
 from time import process_time
 from mptt.templatetags.mptt_tags import cache_tree_children, tree_item_iterator, drilldown_tree_for_node
 
+#from autoslug import AutoSlugField
 
 
 class Genre(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True,
                             on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True, unique=True, db_index=True)
+#    slug = AutoSlugField(populate_from='name')
 
     class MPTTMeta:
         order_insertion_by = ['name']
