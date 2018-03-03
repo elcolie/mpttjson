@@ -3,8 +3,6 @@ from rest_framework.serializers import ModelSerializer,  SerializerMethodField
 from rest_framework_recursive.fields import RecursiveField                 #To find list of children
 from mptt.models import MPTTModel, TreeForeignKey
 
-from risk.models import Risk
-from risk.models import Category
 from risk.models import Genre
 
 
@@ -19,7 +17,7 @@ class RootSerializer(serializers.ModelSerializer):
         return serialized_data.data
     
     class Meta:
-        model = Category
+        model = Genre
         fields = ( 'name', 'children')
 
 
@@ -54,7 +52,7 @@ class Root2Serializer(serializers.ModelSerializer):
         return serialized_data.data
     
     class Meta:
-        model = Risk
+        model = Genre
         fields = ( 'text', 'HTMLclass', 'collapsed', 'children')
 
 
@@ -86,7 +84,7 @@ class TreeSerializer(serializers.Serializer):
     children = serializers.ListField(child=RecursiveField())
 
     class Meta:
-        model = Risk
+        model = Genre
         fields = ['text', 'HTMLclass', 'collapsed', 'children']
 
 
