@@ -36,6 +36,21 @@ def my_date ():
     return datetime.today().date()
 
 
+#Breadcrumbs - Risk (Used by django-mptt-urls) ----------------------------------------------------
+
+def risk(request, path, instance, extra):
+    return render(
+        request,
+        'risk/risk.html',
+
+        {
+            'instance': instance,
+            'children': instance.get_children() if instance else Risk.objects.root_nodes(),
+            'extra': extra,
+        }
+    )
+
+
 
 #Class with Responses 
 class ResponsesListView(generic.ListView):
@@ -94,22 +109,11 @@ class ResponsesListJson(BaseDatatableView):
             return super(ResponsesListJson, self).render_column(row, column)
 
 
-
-
-
-#Breadcrumbs - Risk (Used by django-mptt-urls) ----------------------------------------------------
-
-def risk(request, path, instance, extra):
-    return render(
-        request,
-        'risk/risk.html',
-
-        {
-            'instance': instance,
-            'children': instance.get_children() if instance else Risk.objects.root_nodes(),
-            'extra': extra,
-        }
-    )
+    #How to filter dynamically according to instance URL ?)
+    def get_initial_queryset(self):
+        return Responses.objects.filter(risk__in=Risk.objects.get(pk=1).get_descendants(include_self=True))  #children of risk 1
+#        return Responses.objects.filter(risk__in=Risk.objects.get(title=instance.title).get_descendants(include_self=True))  
+    
 
 
 

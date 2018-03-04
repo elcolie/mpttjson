@@ -120,16 +120,7 @@ class Responses(models.Model):    #Note, 'Response' seems to be a reserved term
     deadlineDate       = models.DateField('Deadline date', blank=True, null=True, default=my_date)    
     objects            = ResponsesManager()  #Inherit from model manager 
 
-    """
-    # get url
-    def url(self):
-        return reverse('risk', kwargs={'path': self.get_path()})
-
-    # get id2
-    def id2(self):
-        return reverse('risk', kwargs={'path': self.id})
-    """
-   
+  
     def __str__(self):        
         return self.description
 
