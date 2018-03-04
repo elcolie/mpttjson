@@ -20,19 +20,16 @@
 
 
     <br>
-    MPTT Examples:
+    MPTT Example
     <br>
     <br>
-    Trees:
+    TREES:
 
     <br>
 
-    <a href="/admin/risk/">Admin</a>
-    <br>
-    <a href="/risk/">Risks (list)</a>
-    <br>   
-    <a href="/risk/animals/">Risk & Responses</a>
-    <br>       
+
+    <a href="/risk/">Risks</a>
+    <br>        
 
 
     <br>
@@ -44,11 +41,13 @@
     <br>
     <a href="/risk/2/">Read #2 </a>
     <br>
-    <a href="/risk/2/update/">Update#2 (doesn't work)</a>
+    <a href="/risk/2/update/">Update#2 (bug)</a>
     <br>
     <a href="/risk/10/delete/">Delete #10</a>
     <br>
     <a href="/risk/5/move/">Move #5</a>
+    <br>
+    <a href="/admin/risk/">Admin</a>
     <br>
 
 
@@ -58,6 +57,11 @@
     <br> 
     <a href="{% url 'risk-api:risktree' %}">Nested-serialize-recursive</a>
     <br> 
+    <br> 
+
+    DASHBOARDS:
+    <br> 
+    <a href="/risk/animals/">Risk & Responses</a> (how to dynamically filter table according to the category in URL ?)
 </body>
 </html>
 
