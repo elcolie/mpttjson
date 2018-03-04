@@ -1,7 +1,8 @@
+from django import forms
 from django.forms import ModelForm
 from mptt.forms import TreeNodeChoiceField, MoveNodeForm, TreeNodePositionField
 
-from risk.models import Risk
+from risk.models import Risk, Responses
 
 
 class RiskCreateForm(ModelForm):
@@ -23,3 +24,10 @@ class RiskCreateForm(ModelForm):
 class RiskMoveNodeForm(MoveNodeForm):
     target = TreeNodeChoiceField(queryset=Risk.objects.all())
     position = TreeNodePositionField()
+
+
+
+class ResponsesForm(forms.ModelForm):
+    class Meta:
+        model = Responses
+        fields = '__all__'

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <h2>All Responses</h2>
+    <ul>
+        {% for responses in object_list %}
+            <li>{{ responses.id }}, {{ responses.entity }}, {{ responses.risk }}, {{ responses.responsesCategory }} , {{ responses.description }} </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
+

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+<!-- Breadcrumbs -->
+
+        Risks
+        {% for ancestor in instance.get_ancestors %}
+            > <a href="{{ ancestor.get_absolute_url }}">{{ ancestor.title }}</a>
+        {% endfor %}
+        > <strong>{{ instance.title }}</strong>
+
+        <ul>
+            {% for child in children %}
+                <li><a href="{{ child.get_absolute_url }}">{{ child.title }}</a> </li>
+            {% empty %}
+                <li>No more subcategories</li>
+            {% endfor %}
+        </ul>
+
+<hr>
+
+</div> 
+
+<!-- Datatable Code -->
+
+<!-- Procedure for adding a new datatable:
+
+1. Add a link here to static script & a var JSON URL below
+2. Create a 'datatable_*****.js' file (in folders 'static_assets' (dev) & 'static' (prod))
+3. Create views in the 'views.py'
+4. Import the views and creating links in the 'urls.py' file
+5. Call up the datatableXxxxxxx in this file below
+
+-->
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
+
+{% load static %}
+
+<script src="{% static "datatable_responses.js" %}"></script>
+
+
+{% load i18n %}
+{% load i18n staticfiles %}
+
+
+<script type="text/javascript">
+    var RESPONSES_LIST_JSON_URL = '{% url "responses_list_json" %}';
+
+
+    // translations for datatables
+    var dt_language = {
+        "emptyTable":     "{% trans "No data available in table" %}",
+        "info":           "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
+        "infoEmpty":      "{% trans "Showing 0 to 0 of 0 entries" %}",
+        "infoFiltered":   "{% trans "(filtered from _MAX_ total entries)" %}",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "{% trans "Show _MENU_ entries" %}",
+        "loadingRecords": "{% trans "Loading..." %}",
+        "processing":     "{% trans "Processing..." %}",
+        "search":         "{% trans "Search:" %}",
+        "zeroRecords":    "{% trans "No matching records found" %}",
+        "paginate": {
+            "first":      "{% trans "First" %}",
+            "last":       "{% trans "Last" %}",
+            "next":       "{% trans "Next" %}",
+            "previous":   "{% trans "Previous" %}"
+        },
+        "aria": {
+            "sortAscending":  "{% trans ": activate to sort column ascending" %}",
+            "sortDescending": "{% trans ": activate to sort column descending" %}"
+        }
+    }
+    </script>
+
+<!-- End datatable code  #############   -->
+
+<br>
+
+<div class="container">
+
+
+<hr> 
+
+<!-- RESPONSE datatable-->  
+
+
+    <div class="row"> 
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title text-center">
+                        <b>Responses to risks</b>
+                    </h5>
+                </div>
+                <div class="panel-body">
+                    <table class="datatableResponses responsive" width="100%">
+                        <thead>
+
+                            <th>Link</th>                
+                            <th>Risk</th>       
+                            <th>Response</th>                          
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <br>
+                        <a href="{% url 'responses_new' %}" class="top-menu">
+                        <button type="button" class="btn btn-primary center-block">Add Response</button></a> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div> 
+
+</ul>
+
+
+{% endblock %}
+
+

@@ -1,4 +1,10 @@
+{% extends 'base.html' %}
+
 {% load static %}
+
+{% load staticfiles %}
+
+{% block content %}
 
 <!DOCTYPE html>
 <html>
@@ -10,32 +16,54 @@
 
 </head>
 <body>    
-    
-    <br>
-    MPTT:
+  
+
 
     <br>
-    <a href="/admin/risk/risk/">Admin</a>
-    <br>
-    <a href="/risk/">List</a>
+    MPTT Examples:
     <br>
     <br>
+    Trees:
+
+    <br>
+
+    <a href="/admin/risk/">Admin</a>
+    <br>
+    <a href="/risk/">Risk as list</a>
+    <br>  
+    <a href="/responses/">Responses as list</a>
     <br> 
+    <a href="/risk/animals">Risk as breadcrumbs</a>
+    <br>       
+
+
+    <br>
 
     CRUD:
 
     <br>
     <a href="/risk/create/">Create</a>
     <br>
-    <a href="/risk/2/">Detail</a>
+    <a href="/risk/2/">Read #2 </a>
     <br>
-    <a href="/risk/2/move/">Move</a>
+    <a href="/risk/2/update/">Update#2 (doesn't work)</a>
     <br>
+    <a href="/risk/10/delete/">Delete #10</a>
+    <br>
+    <a href="/risk/5/move/">Move #5</a>
+    <br>
+
+
     <br> 
 
     REST API:
     <br> 
-    <a href="{% url 'risk-api:risktree' %}">Nested-serialize-recursive</a> 
-
+    <a href="{% url 'risk-api:risktree' %}">Nested-serialize-recursive</a>
+    <br> 
+    <a href="/risk/">Treant chart (pending)</a>
+    <br> 
 </body>
 </html>
+
+{% endblock %}
+
