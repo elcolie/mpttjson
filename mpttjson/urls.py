@@ -52,13 +52,10 @@ urlpatterns = [
 
     #The following code injects the slug (path) into the url for the breadcrumbs
     url(r'^risk/(?P<path>.*)', mptt_urls.view(model='risk.models.Risk', view='risk.views.risk', slug_field='slug'), {'extra': ''}, name='risk'),
-
-    url(r'^datatables_4$', ResponsesList.as_view(), name="datatables_4"),
+    url(r'^responses_list$', ResponsesList.as_view(), name="responses_list"),
     url(r'^responses_data/$', ResponsesListJson.as_view(), name="responses_list_json"),
-
     url(r'^responses/(?P<pk>\d+)/$', responses_detail, name='responses_detail'),
     url(r'^responses/new/$', responses_new, name='responses_new'),
     url(r'^responses/(?P<pk>\d+)/edit/$', responses_edit, name='responses_edit'),
-
 
     ]

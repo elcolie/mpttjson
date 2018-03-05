@@ -52,6 +52,46 @@ def risk(request, path, instance, extra):
 
 
 
+# RESPONSES -------------------------------------
+
+
+
+#JSON for Datatable
+class ResponsesListJson(BaseDatatableView):  
+    model = Responses
+    columns = ['id',  'risk.title', 'responsesCategory'  ]  
+    order_columns = ['id', 'risk.title', 'responsesCategory' ]    #doesn't sort !
+
+    #How to filter queryset dynamically according to the URL ?
+
+    def get_initial_queryset(self):
+        return Responses.objects.filter(risk__in=Risk.objects.get(title="All risks").get_descendants(include_self=True))  #All risks
+#        return Responses.objects.filter(risk__in=Risk.objects.get(title="Cats").get_descendants(include_self=True))      #Cats only 
+#        return Responses.objects.filter(risk__in=Risk.objects.get(pk=1).get_descendants(include_self=True))       #Risk 1
+
+
+    #Displaying hyperlinks in the datatable
+    def render_column(self, row, column):
+        if column == 'id':
+            return '<a href="../responses/%s/edit/">link</a>'  % row.id      # %s is a placeholder for the string %...
+        else:
+            return super(ResponsesListJson, self).render_column(row, column)
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
 #Class with Responses 
 class ResponsesListView(generic.ListView):
     model = Responses
@@ -95,25 +135,6 @@ def responses_edit(request, pk):
     return render(request, 'risk/responses_edit.html', {'form': form})
 
 
-#JSON for Datatable
-class ResponsesListJson(BaseDatatableView):  
-    model = Responses
-    columns = ['id',  'risk.title', 'responsesCategory'  ]  
-    order_columns = ['id', 'risk.title', 'responsesCategory' ]    #doesn't sort !
-
-    #Displaying hyperlinks in the datatable
-    def render_column(self, row, column):
-        if column == 'id':
-            return '<a href="../responses/%s/edit/">link</a>'  % row.id      # %s is a placeholder for the string %...
-        else:
-            return super(ResponsesListJson, self).render_column(row, column)
-
-
-    #How to filter dynamically according to instance URL ?)
-    def get_initial_queryset(self):
-        return Responses.objects.filter(risk__in=Risk.objects.get(pk=1).get_descendants(include_self=True))  #children of risk 1
-#        return Responses.objects.filter(risk__in=Risk.objects.get(title=instance.title).get_descendants(include_self=True))  
-    
 
 
 
