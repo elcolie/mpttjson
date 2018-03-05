@@ -1,4 +1,5 @@
 django
+django-environ
 django-mptt
 django-mptt-admin
 django-mptt-urls

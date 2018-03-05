@@ -14,9 +14,10 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import environ
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+# Building paths
+ROOT_DIR = environ.Path(__file__) - 4
 
 #Location of settings.py
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -136,13 +137,11 @@ USE_TZ = True
 # Development ---------------------------
 
 STATIC_URL = '/static/'
+STATIC_ROOT = str(ROOT_DIR('static'))
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/home/jdsen/mpttjson/static/',
-    '/static/',
     os.path.join(BASE_DIR, "static_assets"),
-    '/home/jdsen/mpttjson/static_assets/',
-    '/static_assets/',
 ]
+
 
